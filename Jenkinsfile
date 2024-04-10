@@ -4,6 +4,9 @@ pipeline {
       maven 'MAVEN_HOME' 
       jdk 'JAVA_HOME' 
     }
+    options {
+        skipStagesAfterUnstable()
+    }
     stages {
         stage('Build') { 
             steps {
@@ -18,6 +21,11 @@ pipeline {
                 always {
                     junit 'target/surefire-reports/*.xml'
                 }
+            }
+        }
+        stage('Deliver') {
+            steps {
+                sh './jenkins/scripts/deliver.sh'
             }
         }
     }
